@@ -1,15 +1,12 @@
 import * as React from "react";
-import {
-  ContextualMenu,
-  IContextualMenuProps,
-  IIconProps,
-} from "@fluentui/react";
+import { ContextualMenu, IContextualMenuProps } from "@fluentui/react";
 import { DefaultButton } from "@fluentui/react/lib/Button";
+import { FluentIconNames } from "../../../types";
 
 export interface IMenuButtonProps {
   // These are set based on the toggles shown above the examples (not needed in real code)
   label: string;
-  icon: IIconProps;
+  icon: FluentIconNames;
   menuProps: IContextualMenuProps;
 
   //   Item props example:
@@ -31,11 +28,12 @@ export const MenuButton: React.FunctionComponent<IMenuButtonProps> = (
   props
 ) => {
   const { label, icon, menuProps } = props;
+  const iconprops = { iconName: icon };
 
   return (
     <DefaultButton
       text={label}
-      iconProps={icon}
+      iconProps={iconprops}
       menuProps={menuProps}
       // Optional callback to customize menu rendering
       menuAs={_getMenu}

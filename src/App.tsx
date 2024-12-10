@@ -1,13 +1,8 @@
-import {
-  Stack,
-  Text,
-  Link,
-  Separator,
-  ThemeProvider,
-  DefaultButton,
-  PrimaryButton,
-} from "@fluentui/react";
+import { Stack, ThemeProvider } from "@fluentui/react";
 import { roryTheme } from "./theme";
+import { initializeIcons } from "@fluentui/react";
+
+initializeIcons();
 
 const App = () => {
   return (
