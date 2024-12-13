@@ -1,14 +1,47 @@
-import { createTheme, getTheme } from "@fluentui/react";
+import {
+  createTheme,
+  Customizations,
+  getTheme,
+  ISeparatorStyles,
+} from "@fluentui/react";
 
 // Access the default theme
 const defaultTheme = getTheme();
 
-// Create a custom theme using Fluent UI's default colors and Magenta Dark as the accent color
+// Define custom separator styles
+const customSeparatorStyles: ISeparatorStyles = {
+  root: {
+    selectors: {
+      "::before": {
+        backgroundColor: defaultTheme.palette.neutralQuaternaryAlt, // Magenta Dark as the separator color
+      },
+    },
+  },
+  content: {},
+};
+
+// Apply global customizations for Separator styles
+Customizations.applySettings({
+  settings: {
+    ISeparatorStyles: customSeparatorStyles, // Apply custom separator styles
+  },
+});
+
+// Create a custom theme with Magenta Dark as the accent color
 export const roryTheme = createTheme({
   palette: {
-    // Primary accent color (Magenta Dark)
     themePrimary: defaultTheme.palette.magentaDark, // Magenta Dark as the primary accent color
-    themeLighterAlt: defaultTheme.palette.magentaLight, // Lightest shade of Magenta for hover/focus states
-    themeLighter: defaultTheme.palette.magentaLight, // Slightly lighter magenta for subtle accents
+  },
+  components: {
+    Separator: {
+      styles: customSeparatorStyles, // Apply custom separator styles
+    },
+  },
+});
+
+// Apply the custom theme globally using Customizations
+Customizations.applySettings({
+  settings: {
+    theme: roryTheme,
   },
 });

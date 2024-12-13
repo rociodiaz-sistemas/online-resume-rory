@@ -1,48 +1,81 @@
 import * as React from "react";
 import { ContextualMenu, IContextualMenuProps } from "@fluentui/react";
-import { DefaultButton } from "@fluentui/react/lib/Button";
-import { FluentIconNames } from "../../../types";
+import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 
 export interface IMenuButtonProps {
   // These are set based on the toggles shown above the examples (not needed in real code)
-  label: string;
-  icon: FluentIconNames;
-  menuProps: IContextualMenuProps;
-
-  //   Item props example:
-  //   items: [
-  //     {
-  //       key: "emailMessage",
-  //       text: "Email message",
-  //       iconProps: { iconName: "Mail" },
-  //     },
-  //     {
-  //       key: "calendarEvent",
-  //       text: "Calendar event",
-  //       iconProps: { iconName: "Calendar" },
-  //     },
-  //   ],
+  text: string;
+  iconName: string;
+  isPrimary?: boolean;
 }
 
 export const MenuButton: React.FunctionComponent<IMenuButtonProps> = (
   props
 ) => {
-  const { label, icon, menuProps } = props;
-  const iconprops = { iconName: icon };
+  const { text, iconName, isPrimary } = props;
 
-  return (
-    <DefaultButton
-      text={label}
-      iconProps={iconprops}
+  const icon = { iconName: iconName };
+
+  const smsMessage = encodeURIComponent(
+    "Hello, I am interested in your software development services."
+  );
+
+  const subject = encodeURIComponent("Let's connect");
+
+  const menuProps: IContextualMenuProps = {
+    items: [
+      {
+        key: "skype",
+        text: "Skype message",
+        iconProps: { iconName: "SkypeLogo" },
+        onClick: () => {
+          window.open("skype:rochurosh38@hotmail.com?chat", "_blank");
+        },
+      },
+      {
+        key: "mail",
+        text: "Email",
+        iconProps: { iconName: "Mail" },
+        onClick: () => {
+          window.location.href = `mailto:email@example.com?subject=${subject}&body=${smsMessage}`;
+        },
+      },
+      // {
+      //   key: "argentinaSms",
+      //   text: "SMS 🇦🇷",
+      //   iconProps: { iconName: "CannedChat" },
+      //   onClick: () => {
+      //     window.location.href = `sms:+541125127060?body=${smsMessage}`;
+      //   },
+      // },
+      // {
+      //   key: "usSMS",
+      //   text: "SMS 🇺🇸",
+      //   iconProps: { iconName: "CannedChat" },
+      //   onClick: () => {
+      //     window.location.href = `sms:+14087570660?body=${smsMessage}`;
+      //   },
+      // },
+    ],
+  };
+
+  return isPrimary ? (
+    <PrimaryButton
+      styles={{ root: { maxHeight: "35px" } }}
+      text={text}
+      iconProps={icon}
       menuProps={menuProps}
-      // Optional callback to customize menu rendering
       menuAs={_getMenu}
-      // Optional callback to do other actions (besides opening the menu) on click
-      onMenuClick={_onMenuClick}
-      // By default, the ContextualMenu is re-created each time it's shown and destroyed when closed.
-      // Uncomment the next line to hide the ContextualMenu but persist it in the DOM instead.
-      // persistMenu={true}
-      allowDisabledFocus
+      persistMenu={true}
+    />
+  ) : (
+    <DefaultButton
+      styles={{ root: { maxHeight: "35px" } }}
+      text={text}
+      iconProps={icon}
+      menuProps={menuProps}
+      menuAs={_getMenu}
+      persistMenu={true}
     />
   );
 };
@@ -50,8 +83,4 @@ export const MenuButton: React.FunctionComponent<IMenuButtonProps> = (
 function _getMenu(props: IContextualMenuProps): JSX.Element {
   // Customize contextual menu with menuAs
   return <ContextualMenu {...props} />;
-}
-
-function _onMenuClick(ev?: React.SyntheticEvent<any>) {
-  console.log(ev);
 }
